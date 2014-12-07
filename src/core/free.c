@@ -11,7 +11,6 @@ void	free_alias(t_jsh *jsh)
       free(jsh->alias[i]);
       i++;
     }
-  printf("Free pour j = %d\n", i);
   free(jsh->alias[i][0]);
   free(jsh->alias[i][1]);
   free(jsh->alias[i]);
