@@ -31,3 +31,23 @@ typedef	struct	s_jsh
   char		***alias;
   t_config	config;
 }		t_jsh;
+
+void	dump_jsh(t_jsh *jsh);
+void	error(int code, t_jsh *jsh, char *msg);
+int	execute_command(t_jsh *jsh, char *file, char **argv);
+int	execute_true(t_jsh *jsh, char **argv);
+int	parse_cmd(t_jsh *jsh, char *cmd);
+int	execute_alias(t_jsh *jsh, char **argv, char *cmd);
+void	launchShell(t_jsh *jsh);
+int	parseArgs(int ac, char **argv);
+char	**parse_args(char *str);
+char	*my_getenv(char **env, char *str);
+int	set_env(t_jsh *jsh, char **env);
+void    loading();
+void	parse_alias(t_jsh *jsh);
+int	init_memory_alloc(t_jsh *jsh);
+int	init_config(t_jsh *jsh);
+int	init(t_jsh *jsh, char **env);
+int	file_exists(char *path);
+char	*rm_bc(char *str);
+

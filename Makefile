@@ -6,7 +6,15 @@ NAME	= jSh
 
 CFLAGS 	= -I./include
 
-SRC	= src/main.c
+SRC	=	src/main.c		\
+		src/core/args.c		\
+		src/core/core.c		\
+		src/env/env_core.c	\
+		src/feature/loading.c	\
+		src/init/memory.c	\
+		src/init/parsing.c	\
+		src/system/errors.c	\
+		src/system/util.c	\
 
 OBJS	= $(SRC:.c=.o)
 
