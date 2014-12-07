@@ -21,6 +21,7 @@ char	**parse_args(char *str)
   int	i = 0, j = 0, k = 0;
   char	**tab;
   char	*tmp;
+  char	separator;
 
   if (strlen(str) <= 0)
     return (NULL);
@@ -32,11 +33,14 @@ char	**parse_args(char *str)
     {
       tab = realloc(tab, (i + 2) * sizeof(char*));
       j = 0;
+      separator = ' ';
       memset(tmp, 0, 4096);
-      while (str[k] != ' ' && str[k])
+      while (str[k] != separator && str[k])
 	{
-	  tmp[j] = str[k];
-	  j++;
+	  if (j == 0 && str[k] == '\"')
+	    separator = '\"';
+	  else
+	    tmp[j++] = str[k];
 	  k++;
 	}
       tab[i] = malloc((strlen(tmp) + 1) * sizeof(char));

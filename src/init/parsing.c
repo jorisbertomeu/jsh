@@ -4,6 +4,7 @@ void	parse_alias(t_jsh *jsh)
 {
   FILE	*fd;
   char	*buff;
+  char	*tmp;
   int	i = 0, j = 0;
 
   fd = fopen("./jsh_alias", "r");
@@ -27,9 +28,12 @@ void	parse_alias(t_jsh *jsh)
 	return;
       memset(jsh->alias[j][0], 0, i + 1);
       memset(jsh->alias[j][1], 0, strlen(buff) - i + 1);
-      strncpy(jsh->alias[j][0], rm_bc(buff), i);
-      strcpy(jsh->alias[j][1], rm_bc(&buff[i + 1]));
-      printf("Alias %s => %s\n", jsh->alias[j][0], jsh->alias[j][1]);
+      tmp = rm_bc(buff);
+      strncpy(jsh->alias[j][0], tmp, i);
+      free(tmp);
+      tmp = rm_bc(&buff[i + 1]);
+      strcpy(jsh->alias[j][1], tmp);
+      free(tmp);
       j++;
       memset(buff, 0, 4096);
     }
@@ -41,6 +45,8 @@ void	parse_alias(t_jsh *jsh)
     return;
   if (!(jsh->alias[j][1] = malloc(1 * sizeof(char))))
     return;
+  printf("Alloc pour j = %d\n", j);
   jsh->alias[j][0] = 0;
   jsh->alias[j][1] = 0;
+  free(buff);
 }

@@ -13,6 +13,7 @@ SRC	=	src/other/version.c \
 		src/env/env.c\
 		src/env/setenv.c\
 		src/env/unsetenv.c\
+		src/alias/add.c\
 
 OBJS	= $(SRC:.c=.o)
 
