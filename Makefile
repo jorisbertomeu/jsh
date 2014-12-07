@@ -1,10 +1,10 @@
-CC	= cc -g3
+CC	=	cc -g3
 
-RM	= rm -f
+RM	=	rm -f
 
-NAME	= jSh
+NAME	=	jSh
 
-CFLAGS 	= -I./include
+CFLAGS 	=	-I./include
 
 SRC	=	src/main.c		\
 		src/core/args.c		\
@@ -17,17 +17,17 @@ SRC	=	src/main.c		\
 		src/system/errors.c	\
 		src/system/util.c	\
 
-OBJS	= $(SRC:.c=.o)
+OBJS	=	$(SRC:.c=.o)
 
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-	cc -o $(NAME) -ldl $(OBJS)
+		cc -o $(NAME) -ldl $(OBJS)
 
 clean:	
-	$(RM) $(OBJS)
+		$(RM) $(OBJS)
 
 fclean:		clean
-	$(RM) $(NAME)
+		$(RM) $(NAME)
 
 re:		fclean all
