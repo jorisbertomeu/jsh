@@ -19,8 +19,8 @@ OBJS	= $(SRC:.c=.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-	gcc -shared -Wl,-install_name,$(NAME), -o $(NAME) $(OBJS)
-	#cc -shared -Wl,-soname=$(NAME) -o $(NAME) $(OBJS)
+	#gcc -shared -Wl,-install_name,$(NAME), -o $(NAME) $(OBJS)
+	cc -shared -Wl,-soname=$(NAME) -o $(NAME) $(OBJS)
 	cp $(NAME) /usr/lib/
 
 mac:		$(NAME)

@@ -67,11 +67,6 @@ char	**parse_args(char *str)
       memset(tmp, 0, 4096);
       while (str[k] != ' ' && str[k])
 	{
-	  if (j == 0 && i == 0)
-	    {
-	      strcpy(tmp, "j_");
-	      j += 2;
-	    }
 	  tmp[j] = str[k];
 	  j++;
 	  k++;
@@ -119,9 +114,16 @@ int	execute_true(t_jsh *jsh, char **argv)
   char	*tmp;
   int	i = 5, j = 0;
 
+  if (file_exists(argv[0]))
+    {
+      if (!execute_command(jsh, argv[0], argv))
+	printf("Error while executing \"%s\"\n", argv[0]);
+      return (1);
+    }
   if (!(line = my_getenv(jsh->env, "PATH=")))
     return (0);
-  tmp = malloc(4096 * sizeof(char));
+  if (!(tmp = malloc(4096 * sizeof(char))))
+    return (0);
   while (i < strlen(line))
     {
       j = 0;
@@ -133,7 +135,7 @@ int	execute_true(t_jsh *jsh, char **argv)
 	  i++;
 	}
       tmp[j] = 0;
-      sprintf(tmp, "%s/%s", tmp, &argv[0][2]);
+      sprintf(tmp, "%s/%s", tmp, argv[0]);
       if (file_exists(tmp))
 	{
 	  if (!execute_command(jsh, tmp, argv))
@@ -147,23 +149,55 @@ int	execute_true(t_jsh *jsh, char **argv)
   return (0);
 }
 
+int	execute_alias(t_jsh *jsh, char **argv, char *cmd)
+{
+  int	i = 0;
+  char	*tmp;
+
+  while (jsh->alias[i][0])
+    {
+      if (!strncmp(jsh->alias[i][0], argv[0], strlen(argv[0])))
+	{
+	  printf("Malloc de %d\n", (strlen(jsh->alias[i][1]) + strlen(argv[0]) + 4));
+	  tmp = malloc((strlen(jsh->alias[i][1]) + strlen(argv[0]) + 4) * sizeof(char));
+	  memset(tmp, 0, (strlen(jsh->alias[i][1]) + strlen(argv[0])) + 4);
+	  //strcpy(tmp, jsh->alias[i][1]);
+	  sprintf(tmp, "%s %s", jsh->alias[i][1], &cmd[strlen(jsh->alias[i][0]) + 1]);
+	  //printf("TMP => %s\n", tmp);
+	  parse_cmd(jsh, tmp);
+	  free(tmp);
+	  return (1);
+	}
+      i++;
+    }
+  return (0);
+}
+
 int	parse_cmd(t_jsh *jsh, char *cmd)
 {
   int	(*command)(t_jsh*, char**) = NULL;
   char	**args;
   int	j = 0, i = 0;
+  char	*module;
 
   if (!strncmp(cmd, "exit", 4))
     return (0);
   if (!(args = parse_args(cmd)))
     return (1);
-  if (!(*(void **)(&command) = dlsym(jsh->modules_handle, args[0])))
+  if (!execute_alias(jsh, args, cmd))
     {
-      if (!execute_true(jsh, args))
-	printf("Commande \"%s\" not found\n", &args[0][2]);
+      module = malloc((strlen(args[0]) + 3) * sizeof(char));
+      memset(module, 0, strlen(args[0]) + 3);
+      sprintf(module, "j_%s", args[0]);
+      if (!(*(void **)(&command) = dlsym(jsh->modules_handle, module)))
+	{
+	  if (!execute_true(jsh, args))
+	    printf("Commande \"%s\" not found\n", args[0]);
+	}
+      else
+	(*command)(jsh, args);
+      free(module);
     }
-  else
-    (*command)(jsh, args);
   while (i < j)
     free(args[i++]);
   free(args);
@@ -191,6 +225,8 @@ void	launchShell(t_jsh *jsh)
 
 int	init_memory_alloc(t_jsh *jsh)
 {
+  if (!(jsh->alias = malloc(1 * sizeof(char**))))
+    return (0);
   if (!(jsh->name = malloc(128 * sizeof(char))))
     return (0);
   memset(jsh->name, 0, 128);
@@ -199,7 +235,72 @@ int	init_memory_alloc(t_jsh *jsh)
   memset(jsh->prompt, 0, 128);
   if (!(jsh->env = malloc(1 * sizeof(char*))))
     return (0);
+  if (!(jsh->version.ver_name = malloc(128 * sizeof(char))))
+    return (0);
+  memset(jsh->version.ver_name, 0, 128);
+  if (!(jsh->version.ver_date = malloc(128 * sizeof(char))))
+    return (0);
+  memset(jsh->version.ver_date, 0, 128);
   return (1);
+}
+
+char	*rm_bc(char *str)
+{
+  int	i = 0;
+  char	*buff = malloc((strlen(str) + 1) * sizeof(char));
+
+  memset(buff, 0, strlen(str) + 1);
+  while (str[i] && str[i] != '\n')
+    {
+      buff[i] = str[i];
+      i++;
+    }
+  return (buff);
+}
+
+void	parse_alias(t_jsh *jsh)
+{
+  FILE	*fd;
+  char	*buff;
+  int	i = 0, j = 0;
+
+  fd = fopen("./jsh_alias", "r");
+  if (fd == NULL)
+    return;
+  if (!(buff = malloc(4096 * sizeof(char))))
+    return;
+  memset(buff, 0, 4096);
+  while (fgets(buff, 4096, fd))
+    {
+      i = 0;
+      while (buff[i] && buff[i] != ':')
+	i++;
+      if (!(jsh->alias = realloc(jsh->alias, (j + 1) * sizeof(char*))))
+	return;      
+      if (!(jsh->alias[j] = malloc(2 * sizeof(char*))))
+	return;
+      if (!(jsh->alias[j][0] = malloc((i + 1) * sizeof(char))))
+	return;
+      if (!(jsh->alias[j][1] = malloc((strlen(buff) - i + 1) * sizeof(char))))
+	return;
+      memset(jsh->alias[j][0], 0, i + 1);
+      memset(jsh->alias[j][1], 0, strlen(buff) - i + 1);
+      strncpy(jsh->alias[j][0], rm_bc(buff), i);
+      strcpy(jsh->alias[j][1], rm_bc(&buff[i + 1]));
+      printf("Alias %s => %s\n", jsh->alias[j][0], jsh->alias[j][1]);
+      j++;
+      memset(buff, 0, 4096);
+    }
+  if (!(jsh->alias = realloc(jsh->alias, (j + 1) * sizeof(char*))))
+    return;      
+  if (!(jsh->alias[j] = malloc(2 * sizeof(char*))))
+    return;
+  if (!(jsh->alias[j][0] = malloc(1 * sizeof(char))))
+    return;
+  if (!(jsh->alias[j][1] = malloc(1 * sizeof(char))))
+    return;
+  jsh->alias[j][0] = 0;
+  jsh->alias[j][1] = 0;
 }
 
 int	init_config(t_jsh *jsh)
@@ -207,6 +308,10 @@ int	init_config(t_jsh *jsh)
   strcpy(jsh->name, "Joris Bertomeu");
   strcpy(jsh->prompt, "%s:%s> ");
   sprintf(jsh->prompt, "%s@%s> ", my_getenv(jsh->env, "USERNAME"), my_getenv(jsh->env, "PWD")); 
+  jsh->version.ver_num = atoi(VER_VERSION);
+  sprintf(jsh->version.ver_name, "%s", VER_NAME);
+  sprintf(jsh->version.ver_date, "%s", VER_DATE);
+  parse_alias(jsh);
   return (1);
 }
 

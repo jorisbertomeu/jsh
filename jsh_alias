@@ -1,0 +1,3 @@
+ne:emacs -nw
+l:ls -l
+clean:find . -name "*~" -print -delete

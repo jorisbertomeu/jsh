@@ -5,7 +5,7 @@ int	j_version(t_jsh *jsh, char **argv)
 {
   int	i = 0;
 
-  printf("Version 0.1 released on December, 7th, 2014\n");
-  printf("jSh 0.1, an original project from Joris Bertomeu written by Joris Bertomeu\n");
+  printf("Version %s (%d) released on %s\n", jsh->version.ver_name, jsh->version.ver_num, jsh->version.ver_date);
+  printf("jSh %d, an original project from Joris Bertomeu written by Joris Bertomeu\n", jsh->version.ver_num);
   return (MODULE_OK);
 }
