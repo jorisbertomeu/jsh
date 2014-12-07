@@ -32,14 +32,6 @@ int	unset_in_env(t_jsh *jsh, char *field)
 
 int	j_unsetenv(t_jsh *jsh, char **argv)
 {
-  if (!strncmp(argv[1], "-v", 2) || !strncmp(argv[1], "-version", 8) ||
-      !strncmp(argv[1], "-h", 2) || !strncmp(argv[1], "-help", 5))
-    {
-      printf("Usage : unsetenv [VARIABLE]\n");
-      printf("Written by Joris Bertomeu for jSh on December, 6th, 2014\n");
-      printf("Description : Remove variable from environment\n");
-      return (MODULE_OK);
-    }
   if (argv[1] != NULL)
     {
       if (!unset_in_env(jsh, argv[1]))
@@ -49,6 +41,11 @@ int	j_unsetenv(t_jsh *jsh, char **argv)
 	}
     }
   else
-    printf("Usage : unsetenv [VARIABLE]\n");
+    {
+      printf("Usage : unsetenv [VARIABLE]\n");
+      printf("Written by Joris Bertomeu for jSh on December, 6th, 2014\n");
+      printf("Description : Remove variable from environment\n");
+      return (MODULE_KO);
+    }
   return (MODULE_OK);
 }
