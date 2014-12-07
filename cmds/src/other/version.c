@@ -5,11 +5,7 @@ int	j_version(t_jsh *jsh, char **argv)
 {
   int	i = 0;
 
-  printf("Version echoing !\n");
-  while (argv[i])
-    {
-      printf("<%d> %s\n", i, argv[i]);
-      i++;
-    }
+  printf("Version 0.1 released on December, 7th, 2014\n");
+  printf("jSh 0.1, an original project from Joris Bertomeu written by Joris Bertomeu\n");
   return (MODULE_OK);
 }

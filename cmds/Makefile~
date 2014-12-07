@@ -9,7 +9,6 @@ CFLAGS 	= -I./include -I../include -fPIC
 SRC	=	src/other/version.c \
 		src/other/echo.c \
 		src/other/cd.c \
-		src/other/alias.c \
 		src/env/env.c\
 		src/env/setenv.c\
 		src/env/unsetenv.c\

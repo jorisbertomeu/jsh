@@ -245,22 +245,6 @@ int	init(t_jsh *jsh, char **env)
   return (1);
 }
 
-void    loading()
-{
-  int   i = 0;
-  char  tmp[512];
-
-  printf("Starting jSh ... 100% Loaded\n");
-  while (i <= 100)
-    {
-      sprintf(tmp, "Loading variable Shell .. <%d%%>\r", i);
-      write(1, tmp, strlen(tmp));
-      usleep(5000);
-      i++;
-    }
-  printf("\n");
-}
-
 int	main(int ac, char *argv[], char **env)
 {
   t_jsh	jsh;
@@ -269,7 +253,6 @@ int	main(int ac, char *argv[], char **env)
     return (0);
   if (!init(&jsh, env))
     error(ERR_FATAL, &jsh, "Shell memory allocation failed, exiting ...");
-  loading();
   launchShell(&jsh);
   dump_jsh(&jsh);
   return (0);

@@ -1,0 +1,8 @@
+#include <modules.h>
+#include <jsh.h>
+
+int j_alias(t_jsh *jsh, char **argv)
+{
+
+  return (MODULE_OK);
+}
