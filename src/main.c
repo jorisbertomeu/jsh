@@ -158,12 +158,13 @@ int	execute_alias(t_jsh *jsh, char **argv, char *cmd)
     {
       if (!strncmp(jsh->alias[i][0], argv[0], strlen(argv[0])))
 	{
-	  printf("Malloc de %d\n", (strlen(jsh->alias[i][1]) + strlen(argv[0]) + 4));
-	  tmp = malloc((strlen(jsh->alias[i][1]) + strlen(argv[0]) + 4) * sizeof(char));
-	  memset(tmp, 0, (strlen(jsh->alias[i][1]) + strlen(argv[0])) + 4);
-	  //strcpy(tmp, jsh->alias[i][1]);
-	  sprintf(tmp, "%s %s", jsh->alias[i][1], &cmd[strlen(jsh->alias[i][0]) + 1]);
-	  //printf("TMP => %s\n", tmp);
+	  printf("Malloc de %d\n", (strlen(jsh->alias[i][1]) + strlen(cmd) + 4));
+	  tmp = malloc((strlen(jsh->alias[i][1]) + strlen(cmd) + 4) * sizeof(char));
+	  memset(tmp, 0, (strlen(jsh->alias[i][1]) + strlen(cmd)) + 4);
+	  strcpy(tmp, jsh->alias[i][1]);
+	  strcat(tmp, &cmd[strlen(jsh->alias[i][0])]);
+	  //	  sprintf(tmp, "%s %s", jsh->alias[i][1], &cmd[strlen(jsh->alias[i][0]) + 1]);
+	  printf("TMP => %s\n", tmp);
 	  parse_cmd(jsh, tmp);
 	  free(tmp);
 	  return (1);
