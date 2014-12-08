@@ -7,6 +7,13 @@
 #define VER_NAME "Kumcat"
 #define ERR_FATAL 1
 
+typedef	struct	s_social
+{
+  int		mode;
+  char		*pseudo;
+  char		*state;
+}		t_social;
+
 typedef	struct	s_version
 {
   int		ver_num;
@@ -30,6 +37,7 @@ typedef	struct	s_jsh
   t_version	version;
   char		***alias;
   t_config	config;
+  t_social	social;
 }		t_jsh;
 
 void	dump_jsh(t_jsh *jsh);

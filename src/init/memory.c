@@ -18,6 +18,9 @@ int	init_memory_alloc(t_jsh *jsh)
   if (!(jsh->version.ver_date = malloc(128 * sizeof(char))))
     return (0);
   memset(jsh->version.ver_date, 0, 128);
+  if (!(jsh->social.pseudo = malloc(128 * sizeof(char))))
+    return (0);
+  memset(jsh->social.pseudo, 0, 128);
   return (1);
 }
 
@@ -29,6 +32,7 @@ int	init_config(t_jsh *jsh)
   jsh->version.ver_num = atoi(VER_VERSION);
   sprintf(jsh->version.ver_name, "%s", VER_NAME);
   sprintf(jsh->version.ver_date, "%s", VER_DATE);
+  jsh->social.mode = 0;
   parse_alias(jsh);
   return (1);
 }

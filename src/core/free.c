@@ -53,5 +53,7 @@ void	dump_jsh(t_jsh *jsh)
       free_env(jsh);
       //free_config(jsh);
       free_version(jsh);
+      if (jsh->social.mode == 1)
+	free(jsh->social.pseudo);
     }
 }
