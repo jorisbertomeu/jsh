@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <dlfcn.h>
+#include <termios.h>
+#include <sys/types.h>
+#include <dirent.h>
 #define VER_VERSION "0.01"
 #define VER_DATE "06/12/2014"
 #define VER_NAME "Kumcat"
@@ -58,4 +61,6 @@ int	init_config(t_jsh *jsh);
 int	init(t_jsh *jsh, char **env);
 int	file_exists(char *path);
 char	*rm_bc(char *str);
-
+int	cmpstringp(const void *p1, const void *p2);
+int	search_autocomplete_alias(t_jsh *jsh, char *str, int *i);
+int	search_autocomplete_cmd(t_jsh *jsh, char *str, int *k);

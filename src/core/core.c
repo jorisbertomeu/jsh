@@ -120,6 +120,42 @@ int	execute_alias(t_jsh *jsh, char **argv, char *cmd)
   return (0);
 }
 
+void	show_prompt(t_jsh *jsh)
+{
+  sprintf(jsh->prompt, "%s@%s> ", my_getenv(jsh->env, "USERNAME"), my_getenv(jsh->env, "PWD")); 
+  write(1, jsh->prompt, strlen(jsh->prompt));
+}
+
+char	*readStdIn(t_jsh *jsh)
+{
+  char *r;
+  int i;
+  struct termios old,new;
+  char c;
+
+  tcgetattr(0,&old);
+  new = old;
+  new.c_lflag &= ~ICANON;
+  new.c_lflag &= ~ECHO;
+  tcsetattr(0, TCSANOW, &new);
+  i = 0;
+  r = malloc(81 * sizeof(char));
+  memset(r, 0, 81);
+  while (read(0, &c, 1) && c != '\n' && i < 80)
+    { 
+      if (c != 9)
+	{
+	  r[i++] = c;
+	  write(1, &c, 1);
+	}
+      else if (c == 9)
+	search_auto_complete(jsh, r, &i);
+    } 
+  r[i] = 0;
+  tcsetattr(0, TCSANOW, &old);
+  return (r);
+}
+
 void	launchShell(t_jsh *jsh)
 {
   char	*buffer;
@@ -128,13 +164,12 @@ void	launchShell(t_jsh *jsh)
     error(ERR_FATAL, jsh, "Shell buffer allocation failed, exiting ...");
   while (1)
     {
-      sprintf(jsh->prompt, "%s@%s> ", my_getenv(jsh->env, "USERNAME"), my_getenv(jsh->env, "PWD")); 
-      memset(buffer, 0, 4096);
-      write(1, jsh->prompt, strlen(jsh->prompt));
-      read(0, buffer, 4096);
-      buffer[strlen(buffer) - 1] = 0;
+      show_prompt(jsh);
+      buffer = readStdIn(jsh);
+      printf("\n");
       if (!parse_cmd(jsh, buffer))
 	break;
+      free(buffer);
     }
   free(buffer);
 }

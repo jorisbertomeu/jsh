@@ -9,11 +9,12 @@ CFLAGS 	= -I./include -I../include -fPIC `curl-config --cflags`
 SRC	=	src/other/version.c \
 		src/other/echo.c \
 		src/other/cd.c \
-		src/other/alias.c \
 		src/env/env.c\
 		src/env/setenv.c\
 		src/env/unsetenv.c\
-		src/alias/add.c\
+		src/alias/alias.c \
+		src/alias/alias_add.c\
+		src/alias/alias_list.c \
 		src/social/social.c\
 		src/social/connect.c\
 		src/social/profile.c\
