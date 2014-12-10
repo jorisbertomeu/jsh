@@ -18,6 +18,10 @@ SRC	=	src/other/version.c \
 		src/social/social.c\
 		src/social/connect.c\
 		src/social/profile.c\
+		src/jmanager/jmanager.c\
+		src/jmanager/jmanager_add.c\
+		src/jmanager/jmanager_list.c\
+		src/json/json.c\
 
 OBJS	= $(SRC:.c=.o)
 

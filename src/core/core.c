@@ -1,4 +1,5 @@
 #include <jsh.h>
+typedef	void(*sighandler_t)(int);
 
 void	error(int code, t_jsh *jsh, char *msg)
 {
@@ -175,14 +176,29 @@ char	*readStdIn(t_jsh *jsh)
   return (r);
 }
 
+int	catch_signal(int signal)
+{
+
+}
+
+void	signal_manager()
+{
+  int	i = 0;
+
+  while (i < NSIG)
+    signal(i++, (sighandler_t) catch_signal);
+}
+
 void	launchShell(t_jsh *jsh)
 {
   char	*buffer;
 
   if (!(buffer = malloc(4096 * sizeof(*buffer))))
     error(ERR_FATAL, jsh, "Shell buffer allocation failed, exiting ...");
+  //signal_manager();
   while (1)
     {
+      
       show_prompt(jsh);
       buffer = readStdIn(jsh);
       printf("\n");

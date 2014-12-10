@@ -26,7 +26,7 @@ OBJS	=	$(SRC:.c=.o)
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
-		cc -o $(NAME) -ldl $(OBJS)
+		cc -o $(NAME) -ldl -L. -ljsmn $(OBJS)
 
 clean:	
 		$(RM) $(OBJS)

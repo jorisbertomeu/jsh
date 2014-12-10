@@ -4,12 +4,13 @@
 
 int	g_back = 0;
 
-int	function_pt(void *ptr, size_t size, size_t nmemb, void *stream){
+int	function_pt(void *ptr, size_t size, size_t nmemb, void *stream)
+{
   g_back = atoi(ptr);
   return (1);
 }
 
-int		http_post(char *url, char *params)
+int		http_post(char *url, char *params, void *ptr)
 {
   CURL		*curl;
   CURLcode	res;
@@ -20,15 +21,16 @@ int		http_post(char *url, char *params)
     {
       curl_easy_setopt(curl, CURLOPT_URL, url);
       curl_easy_setopt(curl, CURLOPT_POSTFIELDS, params);
-      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, function_pt);
+      curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, ptr);
       res = curl_easy_perform(curl);
       if (res != CURLE_OK)
-	fprintf(stderr, "curl_easy_perform() failed: %s\n",
-		curl_easy_strerror(res));
+	return (0);
+      fprintf(stderr, "curl_easy_perform() failed: %s\n",
+	      curl_easy_strerror(res));
       curl_easy_cleanup(curl);
     }
   curl_global_cleanup();
-  return 0;
+  return (1);
 }
 
 int	social_connect(t_jsh *jsh, char **argv)
@@ -52,7 +54,7 @@ int	social_connect(t_jsh *jsh, char **argv)
     }
   sprintf(trame, "username=%s&password=%s", buff, password);
   write("Connecting ...\r", 15);
-  http_post("http://jobertomeu.fr/jsh/jconnect.php", trame);
+  http_post("http://jobertomeu.fr/jsh/jconnect.php", trame, function_pt);
   if (g_back == 0)
     {
       fprintf(stderr, "Error while connection !\n");

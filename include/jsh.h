@@ -5,6 +5,7 @@
 #include <termios.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <signal.h>
 #define VER_VERSION "0.01"
 #define VER_DATE "06/12/2014"
 #define VER_NAME "Kumcat"
