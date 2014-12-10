@@ -94,6 +94,7 @@ int	parse_cmd(t_jsh *jsh, char *cmd)
     }
   while (i < j)
     free(args[i++]);
+  add_history(jsh, cmd);
   free(args);
   return (1);
 }

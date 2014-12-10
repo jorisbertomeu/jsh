@@ -35,6 +35,8 @@ char	**parse_args(char *str)
       j = 0;
       separator = ' ';
       memset(tmp, 0, 4096);
+      while (str[k] == ' ')
+	k++;
       while (str[k] != separator && str[k])
 	{
 	  if (j == 0 && str[k] == '\"')
