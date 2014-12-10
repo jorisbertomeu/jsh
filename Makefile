@@ -19,6 +19,7 @@ SRC	=	src/main.c			\
 		src/autocompletion/auto_alias.c	\
 		src/autocompletion/auto_cmd.c	\
 		src/autocompletion/auto.c	\
+		src/history/history.c		\
 
 OBJS	=	$(SRC:.c=.o)
 

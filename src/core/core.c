@@ -131,7 +131,7 @@ char	*readStdIn(t_jsh *jsh)
   char *r;
   int i;
   struct termios old,new;
-  char c;
+  char c[3];
 
   tcgetattr(0,&old);
   new = old;
@@ -141,15 +141,33 @@ char	*readStdIn(t_jsh *jsh)
   i = 0;
   r = malloc(81 * sizeof(char));
   memset(r, 0, 81);
-  while (read(0, &c, 1) && c != '\n' && i < 80)
+  jsh->history_position = jsh->history_max;
+  while (read(0, &c, 3) && c[0] != '\n' && i < 80)
     { 
-      if (c != 9)
+      if (c[0] == 27)
 	{
-	  r[i++] = c;
-	  write(1, &c, 1);
+	  if (c[2] == 65) //Fleche haut
+	    up_history(jsh, r, &i);
+	  else if (c[2] == 66) //Fleche bas
+	    down_history(jsh, r, &i);
 	}
-      else if (c == 9)
+      else if (c[0] == 9)
 	search_auto_complete(jsh, r, &i);
+      else if (c[0] == 127)
+	{
+	  if (i > 0)
+	    {
+	      r[i--] = 0;
+	      write(0, "\b\b", 1);
+	      write(0, "  ", 1);
+	      write(0, "\b\b", 1);
+	    }
+	} 
+      else
+	{
+	  r[i++] = c[0];
+	  write(0, &c[0], 1);
+	}
     } 
   r[i] = 0;
   tcsetattr(0, TCSANOW, &old);

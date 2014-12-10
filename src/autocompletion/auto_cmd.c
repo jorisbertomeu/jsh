@@ -78,7 +78,7 @@ int		search_autocomplete_cmd(t_jsh *jsh, char *str, int *k)
   char		*line;
   int		i = 5, j = 0, l = 0;
   char		**tab;
-
+  
   if (!(line = (char*) my_getenv(jsh->env, "PATH=")))
     return (0);
   tab = fill_tab(str, &l, line);
@@ -91,7 +91,7 @@ int		search_autocomplete_cmd(t_jsh *jsh, char *str, int *k)
       *k = strlen(tab[i]);
       strcpy(str, tab[i]);
     }
-  else
+  else if (l != 0)
     {
       i = 0;
       printf("\n");
@@ -100,6 +100,8 @@ int		search_autocomplete_cmd(t_jsh *jsh, char *str, int *k)
       printf("\n");
       show_prompt(jsh);
       *k = identical_start(tab, l);
+      //printf("idx => %d\n", push);
+      //*k = strlen(tab[0]);
       write(1, tab[0], *k);
       strncpy(str, tab[0], *k);
     }

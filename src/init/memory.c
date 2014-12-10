@@ -4,6 +4,8 @@ int	init_memory_alloc(t_jsh *jsh)
 {
   if (!(jsh->alias = malloc(1 * sizeof(char**))))
     return (0);
+  if (!(jsh->history = malloc(2 * sizeof(char*))))
+    return (0);
   if (!(jsh->name = malloc(128 * sizeof(char))))
     return (0);
   memset(jsh->name, 0, 128);
@@ -34,6 +36,7 @@ int	init_config(t_jsh *jsh)
   sprintf(jsh->version.ver_date, "%s", VER_DATE);
   jsh->social.mode = 0;
   parse_alias(jsh);
+  parse_history(jsh);
   return (1);
 }
 

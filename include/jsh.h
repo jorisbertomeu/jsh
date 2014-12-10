@@ -41,6 +41,9 @@ typedef	struct	s_jsh
   char		***alias;
   t_config	config;
   t_social	social;
+  int		history_position;
+  int		history_max;
+  char		**history;
 }		t_jsh;
 
 void	dump_jsh(t_jsh *jsh);
