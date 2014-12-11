@@ -13,17 +13,28 @@
 ** along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <module.h>
+#include <curl/curl.h>
 #include <jsh.h>
+#include <module.h>
 
-int alias_list(t_jsh *jsh, char **argv)
+int	j_social(t_jsh *jsh, char **argv)
 {
-  int	i = 0;
-
-  while (jsh->alias[i][0])
+  if (!argv[1])
     {
-      printf("%s\t\t%s\n", jsh->alias[i][0], jsh->alias[i][1]);
-      i++;
+      printf("Social Module V1.0 for jSh written by Joris Bertomeu\n");
+      printf("Usage : social [connect] [disconnect] [profile] [wait] [request] [file]\n");
+      return (MODULE_KO);
+    }
+  if (!strncmp(argv[1], "profile", 7))
+    return (social_profile(jsh, argv));
+  else if (!strncmp(argv[1], "connect", 7))
+    return (social_connect(jsh, argv));
+  else if (!strncmp(argv[1], "disconnect", 10))
+    return (social_disconnect(jsh, argv));
+  else
+    {
+      printf("Invalid argument, type \"social\" for more informations\n");
+      return (MODULE_KO);
     }
   return (MODULE_OK);
 }
