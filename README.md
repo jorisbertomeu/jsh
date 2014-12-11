@@ -23,7 +23,7 @@ All built-in and especially commands are coded into dynamics libraries, what all
 
 By Including personnals built-in, you allow to trust about jSh.
 
-A packet manager is included 'jmanager' to install some built-in developed by community. (developpment in progess) 
+A package manager is included 'jmanager' to install some built-in developed by community. (developpment in progess) 
 
 Library
 ------
