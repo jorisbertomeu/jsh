@@ -18,13 +18,17 @@ Multiples functions are available in the social Shell :
 Modules
 -------
 Main advantage of jSh is it modularity to adapt it to other modules developed by other developpers.
+
 All built-in and especially commands are coded into dynamics libraries, what allow to develop more personnals built-in by users.
+
 By Including personnals built-in, you allow to trust about jSh.
+
 A packet manager is included 'jmanager' to install some built-in developed by community. (developpment in progess) 
 
 Library
 ------
 For this project, I used some Glibc library as "dl" and oter libs like curl and "NXJSON" to read servlet's result.
+
 For the moment, you have to download only curl by typping "apt-get install curl" (Debian/Ubuntu) or "yum install curl" (Fedora/CentOS/RedHat) or by compiling yourself sources : http://curl.haxx.se/download.html 
 
 About
