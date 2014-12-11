@@ -50,3 +50,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the<br>
 GNU General Public License for more details.<br>
 You should have received a copy of the GNU General Public License<br>
 along with this program. If not, see <http://www.gnu.org/licenses/>.<br></div>
+> **Note:**
+
+> - Full access to **Google Drive** or **Dropbox** is required to be able to import any document in StackEdit. Permission restrictions can be configured in the settings.
+> - Imported documents are downloaded in your browser and are not transmitted to a server.
+> - If you experience problems saving your documents on Google Drive, check and optionally disable browser extensions, such as Disconnect.
