@@ -34,7 +34,7 @@ For the moment, you have to download only curl by typping "apt-get install curl"
 About
 -----
 jSh is a project developped by Joris Bertomeu.
-Last released 0.2 on December, 11th, 2014
+Last released 0.2 on December, 15th, 2014
 
 License
 ------
