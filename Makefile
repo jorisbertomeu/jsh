@@ -7,6 +7,7 @@ NAME	=	jSh
 CFLAGS 	=	-I./include
 
 SRC	=	src/main.c			\
+		src/core/signals.c			\
 		src/core/args.c			\
 		src/core/core.c			\
 		src/core/free.c			\

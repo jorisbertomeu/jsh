@@ -38,7 +38,10 @@ int	execute_command(t_jsh *jsh, char *file, char **argv)
 	return (0);
     }
   else
-    wait(&status);
+    {
+      jsh->job_control.status = waitpid(pid, &status, WUNTRACED | WCONTINUED); //SUSPEND : 5247
+      jsh->job_control.pid = pid;
+    }
   return (1);
 }
 
@@ -191,17 +194,21 @@ char	*readStdIn(t_jsh *jsh)
   return (r);
 }
 
-int	catch_signal(int signal)
+void	signal_manager(t_jsh *jsh)
 {
-
-}
-
-void	signal_manager()
-{
-  int	i = 0;
+  int	i = 0, j = 0;
 
   while (i < NSIG)
-    signal(i++, (sighandler_t) catch_signal);
+    {
+      j = 0;
+      while (jsh->signals[j])
+	{
+	  if (jsh->signals[j]->sig_id == i)
+	    signal(i, (sighandler_t) jsh->signals[j]->ptr_func);
+	  j++;
+	}
+      i++;
+    }
 }
 
 void	launchShell(t_jsh *jsh)
@@ -210,7 +217,7 @@ void	launchShell(t_jsh *jsh)
 
   if (!(buffer = malloc(4096 * sizeof(*buffer))))
     error(ERR_FATAL, jsh, "Shell buffer allocation failed, exiting ...");
-  //signal_manager();
+  signal_manager(jsh);
   while (1)
     {
       

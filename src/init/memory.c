@@ -55,6 +55,27 @@ int	init_config(t_jsh *jsh)
   return (1);
 }
 
+int	init_signals(t_jsh *jsh)
+{
+  int	sig_catched = 2;
+  int	i = 0;
+
+  if (!(jsh->signals = malloc((sig_catched + 1) * sizeof(t_signal*))))
+    return (0);
+  while (i < sig_catched)
+    {
+      if (!(jsh->signals[i] = malloc(sizeof(t_signal))))
+	return (0);
+      i++;
+    }
+  jsh->signals[0]->sig_id = SIGINT;
+  jsh->signals[0]->ptr_func = &signal_sigint;
+  jsh->signals[1]->sig_id = SIGTSTP;
+  jsh->signals[1]->ptr_func = &signal_sigtstp;  
+  jsh->signals[2] = NULL;
+  return (1);
+}
+
 int	init(t_jsh *jsh, char **env)
 {
   if (!init_memory_alloc(jsh))
@@ -64,6 +85,8 @@ int	init(t_jsh *jsh, char **env)
   if (!set_env(jsh, env))
     return (0);
   if (!init_config(jsh))
+    return (0);
+  if (!init_signals(jsh))
     return (0);
   return (1);
 }

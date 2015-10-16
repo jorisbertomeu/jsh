@@ -20,10 +20,10 @@ void    loading()
   int   i = 0;
   char  tmp[512];
 
-  printf("Starting jSh ... 100%% Loaded\n");
+  printf("Starting jSh ...\t\t<100%%>\n");
   while (i <= 100)
     {
-      sprintf(tmp, "Loading variable Shell .. <%d%%>\r", i);
+      sprintf(tmp, "Loading variable Shell ...\t<%d%%>\r", i);
       write(1, tmp, strlen(tmp));
       usleep(5000);
       i++;

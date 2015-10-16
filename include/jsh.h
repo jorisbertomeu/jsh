@@ -4,12 +4,15 @@
 #include <dlfcn.h>
 #include <termios.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <dirent.h>
 #include <signal.h>
 #define VER_VERSION "0.01"
 #define VER_DATE "06/12/2014"
 #define VER_NAME "Kumcat"
 #define ERR_FATAL 1
+
+typedef struct	s_jsh	t_jsh;
 
 typedef	struct	s_social
 {
@@ -32,7 +35,19 @@ typedef struct	s_config
   char		*log_path;
 }		t_config;
 
-typedef	struct	s_jsh
+typedef	struct	s_signal
+{
+  int		sig_id;
+  int		(*ptr_func)(int sig);
+}		t_signal;
+
+typedef	struct	s_jb
+{
+  int		status;
+  int		pid;
+}		t_jb;
+
+struct		s_jsh
 {
   char		*name;
   char		*prompt;
@@ -45,7 +60,9 @@ typedef	struct	s_jsh
   int		history_position;
   int		history_max;
   char		**history;
-}		t_jsh;
+  t_signal	**signals;
+  t_jb		job_control;
+};
 
 void	dump_jsh(t_jsh *jsh);
 void	error(int code, t_jsh *jsh, char *msg);
@@ -68,3 +85,5 @@ char	*rm_bc(char *str);
 int	cmpstringp(const void *p1, const void *p2);
 int	search_autocomplete_alias(t_jsh *jsh, char *str, int *i);
 int	search_autocomplete_cmd(t_jsh *jsh, char *str, int *k);
+int	signal_sigint(int);
+int	signal_sigtstp(int);
