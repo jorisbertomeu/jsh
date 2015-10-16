@@ -31,16 +31,11 @@ void	parse_history(t_jsh *jsh)
     {
       if (!(jsh->history = realloc(jsh->history, (i + 1) * sizeof(char*))))
 	return;
-      if (!(jsh->history[i] = malloc((strlen(buff) + 1) * sizeof(char))))
-	return;
-      memset(jsh->history[i], 0, strlen(buff) + 1);
-      strcpy(jsh->history[i], rm_bc(buff));
+      jsh->history[i] = rm_bc(buff);
       memset(buff, 0, 4096);
       i++;
     }  
   if (!(jsh->history = realloc(jsh->history, (i + 1) * sizeof(char*))))
-    return;
-  if (!(jsh->history[i] = malloc(2 * sizeof(char))))
     return;
   jsh->history[i] = NULL;
   jsh->history_max = i;
@@ -85,7 +80,7 @@ void	parse_alias(t_jsh *jsh)
       memset(buff, 0, 4096);
     }
   if (!(jsh->alias = realloc(jsh->alias, (j + 1) * sizeof(char*))))
-    return;      
+    return;
   if (!(jsh->alias[j] = malloc(2 * sizeof(char*))))
     return;
   if (!(jsh->alias[j][0] = malloc(1 * sizeof(char))))

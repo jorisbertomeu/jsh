@@ -115,6 +115,9 @@ int	parse_cmd(t_jsh *jsh, char *cmd)
   while (i < j)
     free(args[i++]);
   add_history(jsh, cmd);
+  i = 0;
+  while (args[i])
+    free(args[i++]);
   free(args);
   return (1);
 }
@@ -217,8 +220,6 @@ void	launchShell(t_jsh *jsh)
   char	*buffer;
 
   g_jsh = jsh;
-  if (!(buffer = malloc(4096 * sizeof(*buffer))))
-    error(ERR_FATAL, jsh, "Shell buffer allocation failed, exiting ...");
   signal_manager(jsh);
   while (1)
     {
@@ -227,8 +228,10 @@ void	launchShell(t_jsh *jsh)
       buffer = readStdIn(jsh);
       printf("\n");
       if (!parse_cmd(jsh, buffer))
-	break;
+	{
+	  free(buffer);
+	  break;
+	}
       free(buffer);
     }
-  free(buffer);
 }

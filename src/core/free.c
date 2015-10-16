@@ -57,6 +57,31 @@ void	free_version(t_jsh *jsh)
   free(jsh->version.ver_date);
 }
 
+void	free_signals(t_jsh *jsh)
+{
+  int	i = 0;
+
+  while (jsh->signals[i])
+    free(jsh->signals[i++]);
+  free(jsh->signals);
+}
+
+void	free_main_alloc(t_jsh *jsh)
+{
+  free(jsh->social.pseudo);
+}
+
+void	free_history(t_jsh *jsh)
+{
+  int	i = 0;
+  while (i < jsh->history_max)
+    {
+      free(jsh->history[i]);
+      i++;
+    }
+  free(jsh->history);
+}
+
 void	dump_jsh(t_jsh *jsh)
 {
   if (jsh != NULL)
@@ -65,7 +90,10 @@ void	dump_jsh(t_jsh *jsh)
       free(jsh->prompt);
       dlclose(jsh->modules_handle);
       free_alias(jsh);
+      free_main_alloc(jsh);
       free_env(jsh);
+      free_signals(jsh);
+      free_history(jsh);
       //free_config(jsh);
       free_version(jsh);
       if (jsh->social.mode == 1)
