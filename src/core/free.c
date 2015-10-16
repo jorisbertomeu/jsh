@@ -96,7 +96,5 @@ void	dump_jsh(t_jsh *jsh)
       free_history(jsh);
       //free_config(jsh);
       free_version(jsh);
-      if (jsh->social.mode == 1)
-	free(jsh->social.pseudo);
     }
 }
