@@ -29,7 +29,6 @@ void	parse_history(t_jsh *jsh)
   memset(buff, 0, 4096);
   while (fgets(buff, 4096, fd))
     {
-      printf("Alloc pour i = %d\n", i);
       if (!(jsh->history = realloc(jsh->history, (i + 1) * sizeof(char*))))
 	return;
       if (!(jsh->history[i] = malloc((strlen(buff) + 1) * sizeof(char))))
