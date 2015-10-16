@@ -13,6 +13,7 @@
 #define ERR_FATAL 1
 
 typedef struct	s_jsh	t_jsh;
+extern	t_jsh	*g_jsh;
 
 typedef	struct	s_social
 {

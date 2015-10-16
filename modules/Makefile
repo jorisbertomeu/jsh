@@ -9,6 +9,7 @@ CFLAGS 	= -I./include -I../include -fPIC `curl-config --cflags`
 SRC	=	src/other/version.c \
 		src/other/echo.c \
 		src/other/cd.c \
+		src/job_control/fg.c \
 		src/env/env.c\
 		src/env/setenv.c\
 		src/env/unsetenv.c\

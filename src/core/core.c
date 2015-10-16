@@ -15,6 +15,7 @@
 
 #include <jsh.h>
 typedef	void(*sighandler_t)(int);
+t_jsh	*g_jsh;
 
 void	error(int code, t_jsh *jsh, char *msg)
 {
@@ -39,7 +40,7 @@ int	execute_command(t_jsh *jsh, char *file, char **argv)
     }
   else
     {
-      jsh->job_control.status = waitpid(pid, &status, WUNTRACED | WCONTINUED); //SUSPEND : 5247
+      waitpid(pid, &status, WUNTRACED | WCONTINUED);
       jsh->job_control.pid = pid;
     }
   return (1);
@@ -215,6 +216,7 @@ void	launchShell(t_jsh *jsh)
 {
   char	*buffer;
 
+  g_jsh = jsh;
   if (!(buffer = malloc(4096 * sizeof(*buffer))))
     error(ERR_FATAL, jsh, "Shell buffer allocation failed, exiting ...");
   signal_manager(jsh);
