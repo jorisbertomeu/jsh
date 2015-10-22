@@ -147,7 +147,8 @@ int	execute_alias(t_jsh *jsh, char **argv, char *cmd)
 void	show_prompt(t_jsh *jsh)
 {
   sprintf(jsh->prompt, "%s@%s> ",
-	  (my_getenv(jsh->env, "USERNAME")) ? my_getenv(jsh->env, "USERNAME") : (my_getenv(jsh->env, "USER")) ? my_getenv(jsh->env, "USER") : "Unknown",
+	  (my_getenv(jsh->env, "USERNAME")) ? my_getenv(jsh->env, "USERNAME") : 
+	  (my_getenv(jsh->env, "USER")) ? my_getenv(jsh->env, "USER") : "Unknown",
 	  my_getenv(jsh->env, "PWD")); 
   write(1, jsh->prompt, strlen(jsh->prompt));
 }
