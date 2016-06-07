@@ -80,7 +80,7 @@ int	init(t_jsh *jsh, char **env)
 {
   if (!init_memory_alloc(jsh))
     return (0);
-  if (!(jsh->modules_handle = dlopen("libjsh.so", RTLD_LAZY)))
+  if (!(jsh->modules_handle = dlopen("./modules/libjsh.so", RTLD_LAZY)))
     return (0);
   if (!set_env(jsh, env))
     return (0);

@@ -88,7 +88,8 @@ void	dump_jsh(t_jsh *jsh)
     {
       free(jsh->name);
       free(jsh->prompt);
-      dlclose(jsh->modules_handle);
+      if (jsh->modules_handle)
+	dlclose(jsh->modules_handle);
       free_alias(jsh);
       free_main_alloc(jsh);
       free_env(jsh);

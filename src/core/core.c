@@ -22,7 +22,7 @@ void	error(int code, t_jsh *jsh, char *msg)
   fprintf(stderr, "%s\n", msg);
   if (code == ERR_FATAL)
     {
-      dump_jsh(jsh);
+      //dump_jsh(jsh);
       exit(0);
     }
 }

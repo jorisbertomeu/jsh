@@ -24,6 +24,9 @@ int	j_jmanager(t_jsh *jsh, char **argv)
 	return (jmanager_add(jsh, argv));
       else if (!strncmp(argv[1], "list", 3))
 	return (jmanager_list(jsh, argv));
+      else {
+	printf("jManager - Command \"%s\" not found ..\n", argv[1]);
+      }
     }
   else
     printf("jManager version 0.1 released on December, 12th, 2014\nUsage : jmanager [add <package name>] [search <package name>] [remove <package name>] [update] [list]\n");
